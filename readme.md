@@ -1,4 +1,4 @@
-# Trabalho de SO -- Troca de mensagens
+# Troca de mensagens
 
 Esse repositório contém os códigos e os documentos referentes a apresentação
 de trabalho da matéria de Sitemas Operacionais do IFPE Campus Garanhuns.
