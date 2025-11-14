@@ -7,7 +7,7 @@ Dos alunos: Iasmin, Raul, Oliveira e Juan.
 ## Exemplo de código em C
 
 Esse trecho de código é puramente explicativo, não tem funcionalidade real.
-Foi tirado do livro _Sistemas Operacionais Modernos 4° edição._ De Tanembaum.
+Foi tirado do livro _Sistemas Operacionais Modernos 4° edição._ De Tanenbaum.
 
 ```c
 #define N 100 /* numero de lugares no buffer */
