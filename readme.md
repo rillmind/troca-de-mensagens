@@ -35,3 +35,36 @@ void consumer(void) {
   }
 }
 ```
+
+```go
+func produtor(buffer chan<- int, wg *sync.WaitGroup) {
+	defer wg.Done()
+
+	for i := 1; i <= 5; i++ {
+		fmt.Printf("[Produtor] Enviando: %d\n", i)
+		buffer <- i
+		time.Sleep(500 * time.Millisecond)
+	}
+}
+
+func consumidor(buffer <-chan int, wg *sync.WaitGroup) {
+	defer wg.Done()
+
+	for i := 1; i <= 5; i++ {
+		item := <-buffer
+		fmt.Printf("\t[Consumidor] Recebido: %d\n", item)
+		time.Sleep(1 * time.Second)
+	}
+}
+
+func main() {
+	buffer := make(chan int, 2)
+	var wg sync.WaitGroup
+	wg.Add(2)
+	go produtor(buffer, &wg)
+	go consumidor(buffer, &wg)
+	wg.Wait()
+	close(buffer)
+	fmt.Println("[Main] Produtor e Consumidor terminaram.")
+}
+```
