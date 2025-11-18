@@ -2,7 +2,9 @@
 
 Esse repositório contém os códigos e os documentos referentes a apresentação
 de trabalho da matéria de Sitemas Operacionais do IFPE Campus Garanhuns.
-Dos alunos: Iasmin, Raul Holanda, Carolaine Ferreira e Juan.
+Dos alunos: Iasmin Maria, Raul Holanda, Carolaine Ferreira e Juan Bezerra.
+
+PDF: [./doc/slide.pdf](./doc/slide.pdf)
 
 ## Exemplo de código em C
 
