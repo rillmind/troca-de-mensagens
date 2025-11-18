@@ -36,35 +36,66 @@ void consumer(void) {
 }
 ```
 
-```go
-func produtor(buffer chan<- int, wg *sync.WaitGroup) {
-	defer wg.Done()
+## Exemplo em Go
 
-	for i := 1; i <= 5; i++ {
-		fmt.Printf("[Produtor] Enviando: %d\n", i)
-		buffer <- i
-		time.Sleep(500 * time.Millisecond)
-	}
+```go
+const BUFFER_SIZE = 5
+const NUM_ITEMS = 10
+
+func producer(ch chan<- int, wg *sync.WaitGroup) {
+  defer wg.Done()
+  for item := 0; item < NUM_ITEMS; item++ {
+    fmt.Println("PRODUTOR: Gerando item", item)
+    ch <- item
+    fmt.Println("PRODUTOR: Enviou item", item)
+    time.Sleep(100 * time.Millisecond)
+  }
+  close(ch)
+  fmt.Println("PRODUTOR: Canal fechado.")
 }
 
-func consumidor(buffer <-chan int, wg *sync.WaitGroup) {
-	defer wg.Done()
-
-	for i := 1; i <= 5; i++ {
-		item := <-buffer
-		fmt.Printf("\t[Consumidor] Recebido: %d\n", item)
-		time.Sleep(1 * time.Second)
-	}
+func consumer(ch <-chan int, wg *sync.WaitGroup) {
+  defer wg.Done()
+  for item := range ch {
+    fmt.Println("CONSUMIDOR: Recebeu item", item)
+    time.Sleep(300 * time.Millisecond)
+  }
+  fmt.Println("CONSUMIDOR: Canal fechado e vazio. Encerrando.")
 }
 
 func main() {
-	buffer := make(chan int, 2)
-	var wg sync.WaitGroup
-	wg.Add(2)
-	go produtor(buffer, &wg)
-	go consumidor(buffer, &wg)
-	wg.Wait()
-	close(buffer)
-	fmt.Println("[Main] Produtor e Consumidor terminaram.")
+  ch := make(chan int, BUFFER_SIZE)
+  var wg sync.WaitGroup
+  wg.Add(2)
+  go producer(ch, &wg)
+  go consumer(ch, &wg)
+  fmt.Println("MAIN: Aguardando o término das goroutines...")
+  wg.Wait()
+  fmt.Println("MAIN: Todas as goroutines terminaram.")
 }
+```
+
+## Exemplo em Python
+
+```py
+import threading
+import queue
+
+canal = queue.Queue()   # fila atua como canal de mensagens
+
+def produtor():
+  for i in range(5):
+    canal.put(f"msg {i}") # envia mensagem
+    print(f"Produtor enviou msg {i}")
+  canal.put(None)         # mensagem de encerramento
+
+def consumidor():
+  while True:
+    msg = canal.get()     # recebe mensagem
+    if msg is None:
+      break               # termina
+    print(f"Consumidor recebeu {msg}")
+
+threading.Thread(target=produtor).start()
+threading.Thread(target=consumidor).start()
 ```
